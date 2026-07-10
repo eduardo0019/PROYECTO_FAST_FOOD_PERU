@@ -1,0 +1,480 @@
+﻿import React, { useEffect, useState } from 'react';
+import './App.css';
+
+const img = (file) => `${process.env.PUBLIC_URL}/img/${file}`;
+
+const menuData = [
+  {
+    title: 'Burgers',
+    icon: '&#127828;',
+    items: [
+      ['Cheese Burger', 'Carne artesanal, queso cheddar, lechuga, tomate y salsa de la casa.', 'S/ 19.90', img('Cheese Burger.jpeg')],
+      ['Bacon Burger', 'Hamburguesa con tocino crocante, doble queso y papas al hilo.', 'S/ 19.90', img('hambuguersa_baccon.jpeg')],
+      ['Big Grill Burger', 'Doble carne parrillera, cebolla caramelizada y crema especial.', 'S/ 18.90', img('hambuguersa_grill.jpeg')]
+    ]
+  },
+  {
+    title: 'Salchipapas',
+    icon: '&#127839;',
+    items: [
+      ['Clasico', 'Papas doradas, hot dog, mayonesa, ketchup y mostaza.', 'S/ 15.90', img('salchipapa_clasico.jpeg')],
+      ['Salchipobre', 'Papas, hot dog, huevo frito, platano y salsa criolla.', 'S/ 17.90', img('salchipapa_alopobre.jpeg')],
+      ['Salchibrasa', 'Papas crocantes, pollo brasa deshilachado y cremas.', 'S/ 19.90', img('salchipapa_broaster.jpeg')]
+    ]
+  },
+  {
+    title: 'Ensaladas',
+    icon: '&#129367;',
+    items: [
+      ['Ensalada Cesar', 'Pollo grillado, crutones, queso parmesano y salsa cesar.', 'S/ 19.90', img('ensalada_cesar.jpeg')],
+      ['Ensalada Caprese', 'Tomate, queso fresco, albahaca y aceite de oliva.', 'S/ 19.90', img('ensalada_capresse.jpeg')],
+      ['Ensalada Griega', 'Pepino, aceitunas, tomate, queso y vegetales frescos.', 'S/ 19.90', img('ensalada_griega.jpeg')]
+    ]
+  },
+  {
+    title: 'Chaufas',
+    icon: '&#127834;',
+    items: [
+      ['Chaufa Clasico', 'Arroz salteado al wok con pollo, huevo y cebolla china.', 'S/ 14.90', img('chaufa_clasico.jpeg')],
+      ['Chaufa de Carne', 'Carne salteada, sillao, kion y verduras crocantes.', 'S/ 16.90', img('chaufa_carne.jpeg')],
+      ['Chaufa Amazonico', 'Arroz, cecina, platano frito y toque oriental.', 'S/ 18.90', img('chaufa_amazonico.jpeg')]
+    ]
+  },
+  {
+    title: 'Bebidas',
+    icon: '&#129380;',
+    items: [
+      ['Gaseosa 600 ml', 'Inca Kola, Coca-Cola o Sprite helada.', 'S/ 5.00', img('gaseosa.jpeg')],
+      ['Agua 750 ml', 'Agua mineral sin gas o con gas.', 'S/ 3.00', img('agua.jpeg')],
+      ['Bebida de la casa 1 L', 'Maracuya, chicha morada o limonada frozen.', 'S/ 8.90', img('bebidas_casa.jpeg')]
+    ]
+  }
+];
+
+const locations = [
+  ['Callao', 'Av. La Marina con Av. Universitaria, frente a Plaza San Miguel.'],
+  ['San Martin de Porres', 'Av. Tomas Valle con Av. Universitaria, al costado de Incafarma.'],
+  ['Lima', 'Av. 28 de Julio N 625, junto al Ovalo Jorge Chavez.'],
+  ['Santiago de Surco', 'Av. Caminos del Inca 1163.'],
+  ['San Isidro', 'Av. Javier Prado Este, frente al hotel Santa Cruz.'],
+  ['La Molina', 'Av. Raul Ferrero, centro de Plaza Center, segundo piso.']
+];
+
+const inventory = [
+  ['Pan hamburguesa', 150],
+  ['Papas fritas', 85],
+  ['Queso cheddar', 220],
+  ['Gaseosa Inca Kola 1L', 65],
+  ['Cerveza Cusquena', 48]
+];
+
+const initialBookings = [
+  ['Carlos Perez', '4 personas', 'Hoy 7:30 PM', 'Pendiente'],
+  ['Maria Lopez', '2 personas', 'Hoy 8:00 PM', 'Confirmada'],
+  ['Juan Diaz', '3 personas', 'Manana 7:00 PM', 'Pendiente'],
+  ['Ana Torres', '5 personas', 'Manana 8:20 PM', 'Confirmada']
+];
+
+const deliveries = [
+  ['Carlos Perez', 'Pedido #158', 'San Miguel', 'Solicitado'],
+  ['Maria Lopez', 'Pedido #159', 'Lince', 'En camino'],
+  ['Luis Ramos', 'Pedido #160', 'Surco', 'Solicitado'],
+  ['Ana Torres', 'Pedido #161', 'San Borja', 'Entregado']
+];
+
+function Entity({ code }) {
+  return <span dangerouslySetInnerHTML={{ __html: code }} />;
+}
+
+function Header({ activeView, onViewChange }) {
+  const links = [
+    ['inicio', 'Inicio'],
+    ['carta', 'Carta'],
+    ['locales', 'Locales'],
+    ['reserva', 'Reservacion'],
+    ['admin', 'Admin']
+  ];
+
+  return (
+    <header className="site-header">
+      <button className="brand" type="button" onClick={() => onViewChange('inicio')}>
+        <img className="brand-logo" src={img('LOGO.png')} alt="FAST-FOOD PERU" />
+        <span>FAST-FOOD PERU</span>
+      </button>
+
+      <nav className="main-nav" aria-label="Navegacion principal">
+        {links.map(([id, label]) => (
+          <button
+            className={activeView === id ? 'active' : ''}
+            key={id}
+            type="button"
+            onClick={() => onViewChange(id)}
+          >
+            {label}
+          </button>
+        ))}
+      </nav>
+    </header>
+  );
+}
+
+function Home({ onViewChange }) {
+  return (
+    <section className="view active">
+      <div className="page-shell home-layout">
+        <section className="hero-panel">
+          <div className="hero-copy">
+            <p className="eyebrow">36 minutos promedio</p>
+            <h1>Servicio directo a tu domicilio</h1>
+            <p>Ordena tus combos favoritos, revisa ofertas del dia y reserva una mesa en los locales mas cercanos.</p>
+            <div className="hero-actions">
+              <button className="primary-action" type="button" onClick={() => onViewChange('carta')}>Ver carta</button>
+              <button className="secondary-action" type="button" onClick={() => onViewChange('reserva')}>Reservar</button>
+            </div>
+          </div>
+
+          <div className="delivery-scene" aria-label="Pedido por delivery">
+            <img className="delivery-image" src={img('delivery.jpeg')} alt="Pedido por delivery" />
+          </div>
+        </section>
+
+        <section className="section-block">
+          <div className="section-heading">
+            <p className="eyebrow">Ofertas del dia</p>
+            <h2>Combos pensados para compartir</h2>
+          </div>
+          <div className="promo-grid">
+            <article className="promo-card promo-red">
+              <span>2x</span>
+              <h3>Super Combo Fast</h3>
+              <p> 2 Salchifood Grandes.</p>
+              <p> 1 Big Grill.</p>
+              <p> 1 Ensalada Mediana.</p>
+              <strong>S/ 30.00</strong>
+            </article>
+            <article className="promo-card promo-yellow">
+              <h3>Fest Big 4L</h3>
+              <p>1 Big-Grill de 1/4 de Libra.</p>
+              <p>1 Porcion de papas Medianas.</p>
+              <strong>S/ 8.90</strong>
+            </article>
+            <article className="promo-card promo-dark">
+              <span>2</span>
+              <h3>Combo "Facilon"</h3>
+              <p>1 Burger-cheesse.</p>
+              <p>1 Burger-Bacon.</p>
+              <p>1 Gaseosa Mediana (300 Mlt.)</p>
+              <strong>S/ 18.00</strong>
+            </article>
+          </div>
+        </section>
+
+        <section className="section-block">
+          <div className="section-heading">
+            <p className="eyebrow">Descarga nuestra app</p>
+            <h2>Pedidos mas rapidos, ofertas y seguimiento</h2>
+          </div>
+          <div className="app-band">
+            <ul>
+              <li>Al alcance de tu mano para ordenar desde cualquier lugar.</li>
+              <li>Promociones locales para ahorrar en tus pedidos.</li>
+              <li>Estado de delivery y reservas en un solo lugar.</li>
+            </ul>
+            <div className="app-preview">
+              <span className="mini-phone" />
+              <span className="mini-phone second" />
+              <span className="qr-box">QR</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="section-block">
+          <div className="section-heading">
+            <p className="eyebrow">Recomendados</p>
+            <h2>Opiniones de usuarios</h2>
+          </div>
+          <div className="testimonial-grid">
+            <article><strong>Andrea R.</strong><p>La reserva fue rapida y el pedido llego caliente.</p></article>
+            <article><strong>Hector M.</strong><p>La carta se entiende facil y los combos estan claros.</p></article>
+            <article><strong>Valeria T.</strong><p>Me gusto ubicar el local mas cercano desde la web.</p></article>
+          </div>
+        </section>
+      </div>
+    </section>
+  );
+}
+
+function Menu() {
+  return (
+    <section className="view active">
+      <div className="page-shell">
+        <div className="section-heading page-title">
+          <p className="eyebrow">Carta</p>
+          <h1>Menu principal</h1>
+        </div>
+        <div className="menu-stack">
+          {menuData.map((category) => (
+            <section className="menu-category" key={category.title}>
+              <h2>{category.title}: <Entity code={category.icon} /></h2>
+              <div className="menu-grid">
+                {category.items.map(([name, description, price, image]) => (
+                  <article className="menu-card" key={name}>
+                    <img className="food-art" src={image} alt={name} />
+                    <div className="menu-info">
+                      <h3>{name}</h3>
+                      <p>{description}</p>
+                      <div className="price-row">
+                        <strong>{price}</strong>
+                        <button className="mini-action" type="button">Agregar</button>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Locations({ onViewChange }) {
+  return (
+    <section className="view active">
+      <div className="page-shell">
+        <div className="section-heading page-title">
+          <p className="eyebrow">Locales</p>
+          <h1>Ubicanos en tu zona</h1>
+          <span>Aqui encontraras nuestros locales disponibles para delivery o recojo.</span>
+        </div>
+        <div className="locations-list">
+          {locations.map(([district, address]) => (
+            <article className="location-card" key={district}>
+              <div className="location-info">
+                <p className="eyebrow">{district}</p>
+                <h2>{address}</h2>
+                <p>Atencion de lunes a domingo. Delivery, recojo en tienda y reservas disponibles.</p>
+                <button className="mini-action" type="button" onClick={() => onViewChange('reserva')}>Reservar</button>
+              </div>
+              <div className="map-preview" aria-label={`Mapa referencial de ${district}`} />
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Reservation({ onAddBooking }) {
+  const [message, setMessage] = useState('');
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const name = form.elements.guestName.value.trim() || 'Cliente';
+    const phone = form.elements.phone.value.trim();
+    const date = form.elements.visitDate.value;
+    const time = form.elements.visitTime.value;
+    const guests = form.elements.guests.value;
+    const formattedDate = date ? date.split('-').reverse().join('/') : 'Fecha pendiente';
+    const formattedGuests = `${guests} ${guests === '1' ? 'persona' : 'personas'}`;
+
+    onAddBooking([
+      name,
+      `${formattedGuests} - Tel: ${phone}`,
+      `${formattedDate} ${time}`,
+      'Pendiente'
+    ]);
+
+    setMessage(`${name}, tu reservacion fue registrada correctamente.`);
+    form.reset();
+  }
+
+  return (
+    <section className="view active">
+      <div className="page-shell reservation-layout">
+        <section className="reservation-copy">
+          <p className="eyebrow">Reservacion</p>
+          <h1>Realiza tu reserva y evita las colas</h1>
+          <p>Separa tu mesa, elige la hora de llegada y comparte una rica comida acompanada de tus favoritos.</p>
+          <div className="reservation-icon"><Entity code="&#128450;" /></div>
+        </section>
+
+        <form className="reservation-form" onSubmit={handleSubmit}>
+          <h2>Detalles de la reserva</h2>
+          <label>Nombre completo<input name="guestName" type="text" placeholder="Ej. Luis Suarez" required /></label>
+          <label>Telefono de contacto<input name="phone" type="tel" placeholder="940560934" required /></label>
+          <div className="two-columns">
+            <label>Fecha de visita<input name="visitDate" type="date" required /></label>
+            <label>Hora de llegada<input name="visitTime" type="time" required /></label>
+          </div>
+          <label>Numero de personas<input name="guests" type="number" min="1" max="14" placeholder="Ej. 3" required /></label>
+          <button className="primary-action" type="submit">Confirmar reservacion</button>
+          <p className="form-message" role="status">{message}</p>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+function AdminCardList({ data, actionLabel, onDelete }) {
+  if (!data.length) {
+    return <p className="empty-state">No hay registros por ahora.</p>;
+  }
+
+  return (
+    <div className="admin-grid">
+      {data.map(([name, detail, time, status], index) => (
+        <article className="mini-admin-card" key={`${name}-${time}-${index}`}>
+          <h3>{name}</h3>
+          <p>{detail}</p>
+          <p>{time}</p>
+          <p><strong>{status}</strong></p>
+          <button type="button">Ver</button>
+          <button type="button">{actionLabel}</button>
+          {onDelete && <button className="danger-action" type="button" onClick={() => onDelete(index)}>Eliminar</button>}
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function Admin() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [tab, setTab] = useState('inventario');
+
+  if (!loggedIn) {
+    return (
+      <section className="view active">
+        <div className="page-shell admin-shell">
+          <section className="login-panel">
+            <div className="admin-card login-card">
+              <img className="brand-logo big" src={img('LOGO.png')} alt="FAST-FOOD PERU" />
+              <h1>Acceso del propietario</h1>
+              <p>Bienvenido al panel de control.</p>
+              <form onSubmit={(event) => { event.preventDefault(); setLoggedIn(true); }}>
+                <label>Usuario<input type="text" defaultValue="AdminPeru01" /></label>
+                <label>Contrasena<input type="password" defaultValue="123456" /></label>
+                <button className="primary-action" type="submit">Iniciar sesion</button>
+              </form>
+            </div>
+          </section>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="view active">
+      <div className="page-shell admin-shell">
+        <section className="admin-dashboard">
+          <div className="admin-menu">
+            <h1>Menu principal</h1>
+            <button type="button" onClick={() => setTab('inventario')}>Inventario</button>
+            <button type="button" onClick={() => setTab('reservas')}>Reservaciones</button>
+            <button type="button" onClick={() => setTab('delivery')}>Deliverys</button>
+          </div>
+
+          {tab === 'inventario' && (
+            <section className="admin-panel active">
+              <div className="admin-title"><p className="eyebrow">Panel</p><h2>Inventario</h2></div>
+              <div className="table-wrap">
+                <table>
+                  <thead><tr><th>Item</th><th>Cantidad</th><th>Acciones</th></tr></thead>
+                  <tbody>
+                    {inventory.map(([item, quantity], index) => (
+                      <tr key={item}>
+                        <td>{index + 1}. {item}</td>
+                        <td>{quantity}</td>
+                        <td><div className="table-actions"><button type="button">Editar</button><button type="button">Quitar</button></div></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
+
+          {tab === 'reservas' && (
+            <section className="admin-panel active">
+              <div className="admin-title"><p className="eyebrow">Panel</p><h2>Reservaciones</h2></div>
+              <div className="metric-grid">
+                <article><span>08</span><small>Pendientes</small></article>
+                <article><span>15</span><small>Confirmadas</small></article>
+                <article><span>02</span><small>Canceladas</small></article>
+              </div>
+              <AdminCardList data={bookings} actionLabel="Atender" onDelete={onDeleteBooking} />
+            </section>
+          )}
+
+          {tab === 'delivery' && (
+            <section className="admin-panel active">
+              <div className="admin-title"><p className="eyebrow">Panel</p><h2>Deliverys</h2></div>
+              <div className="metric-grid">
+                <article><span>08</span><small>Solicitudes</small></article>
+                <article><span>05</span><small>En camino</small></article>
+                <article><span>18</span><small>Entregados</small></article>
+              </div>
+              <AdminCardList data={deliveries} actionLabel="Entregar" />
+            </section>
+          )}
+        </section>
+      </div>
+    </section>
+  );
+}
+
+function App() {
+  const [activeView, setActiveView] = useState('inicio');
+  const [bookingsState, setBookingsState] = useState(() => {
+    try {
+      const savedBookings = window.localStorage.getItem('fastFoodBookings');
+      return savedBookings ? JSON.parse(savedBookings) : initialBookings;
+    } catch (error) {
+      return initialBookings;
+    }
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem('fastFoodBookings', JSON.stringify(bookingsState));
+  }, [bookingsState]);
+
+  function addBooking(booking) {
+    setBookingsState((currentBookings) => [booking, ...currentBookings]);
+  }
+
+  function deleteBooking(indexToDelete) {
+    setBookingsState((currentBookings) => currentBookings.filter((_, index) => index !== indexToDelete));
+  }
+
+  function changeView(view) {
+    setActiveView(view);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  return (
+    <div className="restaurant-app">
+      <Header activeView={activeView} onViewChange={changeView} />
+      <main>
+        {activeView === 'inicio' && <Home onViewChange={changeView} />}
+        {activeView === 'carta' && <Menu />}
+        {activeView === 'locales' && <Locations onViewChange={changeView} />}
+        {activeView === 'reserva' && <Reservation onAddBooking={addBooking} />}
+        {activeView === 'admin' && <Admin bookings={bookingsState} onDeleteBooking={deleteBooking} />}
+      </main>
+      <footer className="site-footer">
+        <div><strong>FAST-FOOD PERU</strong><span>Delivery, reservas y combos.</span></div>
+        <span>Copyright 2026 - Fast-Food Peru</span>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
+
+
+
+
+
+

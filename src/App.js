@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import './App.css';
 
 const img = (file) => `${process.env.PUBLIC_URL}/img/${file}`;
@@ -65,10 +65,10 @@ const inventory = [
   ['Papas fritas', 85],
   ['Queso cheddar', 220],
   ['Gaseosa Inca Kola 1L', 65],
-  ['Cerveza Cusquena', 48]
+  ['Arroz', 48]
 ];
 
-const bookings = [
+const initialBookings = [
   ['Carlos Perez', '4 personas', 'Hoy 7:30 PM', 'Pendiente'],
   ['Maria Lopez', '2 personas', 'Hoy 8:00 PM', 'Confirmada'],
   ['Juan Diaz', '3 personas', 'Manana 7:00 PM', 'Pendiente'],
@@ -134,7 +134,7 @@ function Home({ onViewChange }) {
           </div>
 
           <div className="delivery-scene" aria-label="Pedido por delivery">
-            <img className="delivery-image" src={img('delivery.jpeg')} alt="Pedido por delivery" />
+            <img className="delivery-image" src={img('delivery.png')} alt="Pedido por delivery" />
           </div>
         </section>
 
@@ -146,21 +146,25 @@ function Home({ onViewChange }) {
           <div className="promo-grid">
             <article className="promo-card promo-red">
               <span>2x</span>
-              <h3>Salchipapas + hamburguesa</h3>
-              <p>Con gaseosa personal incluida.</p>
+              <h3>Super Combo Fast</h3>
+              <p> 2 Salchifood Grandes.</p>
+              <p> 1 Big Grill.</p>
+              <p> 1 Ensalada Mediana.</p>
               <strong>S/ 30.00</strong>
             </article>
             <article className="promo-card promo-yellow">
-              <span>-40%</span>
-              <h3>Martes de pollo crispy</h3>
-              <p>Alitas, papas y crema de la casa.</p>
-              <strong>S/ 18.90</strong>
+              <h3>Fest Big 4L</h3>
+              <p>1 Big-Grill de 1/4 de Libra.</p>
+              <p>1 Porcion de papas Medianas.</p>
+              <strong>S/ 8.90</strong>
             </article>
             <article className="promo-card promo-dark">
               <span>2</span>
-              <h3>Facilonas premium</h3>
-              <p>Dos burgers con queso y papas.</p>
-              <strong>S/ 28.00</strong>
+              <h3>Combo "Facilon"</h3>
+              <p>1 Burger-cheesse.</p>
+              <p>1 Burger-Bacon.</p>
+              <p>1 Gaseosa Mediana (300 Mlt.)</p>
+              <strong>S/ 18.00</strong>
             </article>
           </div>
         </section>
@@ -172,14 +176,14 @@ function Home({ onViewChange }) {
           </div>
           <div className="app-band">
             <ul>
-              <li>Al alcance de tu mano para ordenar desde cualquier lugar.</li>
-              <li>Promociones locales para ahorrar en tus pedidos.</li>
-              <li>Estado de delivery y reservas en un solo lugar.</li>
+              <li><h4>Al alcance de tu mano para ordenar desde cualquier lugar.</h4></li>
+              <li><h4>Promociones locales para ahorrar en tus pedidos.</h4></li>
+              <li><h4>Estado de delivery y reservas en un solo lugar.</h4></li>
             </ul>
             <div className="app-preview">
-              <span className="mini-phone" />
-              <span className="mini-phone second" />
-              <span className="qr-box">QR</span>
+              <a className="playstore-button" href="https://play.google.com/store/apps/details?id=lac.huahlabs.com.llamafooddelivery&hl=es" target="_blank" rel="noopener noreferrer" aria-label="Abrir app en Play Store">
+                <img className="playstore-image" src={img('playstore.jpeg')} alt="Disponible en Play Store" />
+              </a>
             </div>
           </div>
         </section>
@@ -262,13 +266,27 @@ function Locations({ onViewChange }) {
   );
 }
 
-function Reservation() {
+function Reservation({ onAddBooking }) {
   const [message, setMessage] = useState('');
 
   function handleSubmit(event) {
     event.preventDefault();
     const form = event.currentTarget;
     const name = form.elements.guestName.value.trim() || 'Cliente';
+    const phone = form.elements.phone.value.trim();
+    const date = form.elements.visitDate.value;
+    const time = form.elements.visitTime.value;
+    const guests = form.elements.guests.value;
+    const formattedDate = date ? date.split('-').reverse().join('/') : 'Fecha pendiente';
+    const formattedGuests = `${guests} ${guests === '1' ? 'persona' : 'personas'}`;
+
+    onAddBooking([
+      name,
+      `${formattedGuests} - Tel: ${phone}`,
+      `${formattedDate} ${time}`,
+      'Pendiente'
+    ]);
+
     setMessage(`${name}, tu reservacion fue registrada correctamente.`);
     form.reset();
   }
@@ -286,12 +304,12 @@ function Reservation() {
         <form className="reservation-form" onSubmit={handleSubmit}>
           <h2>Detalles de la reserva</h2>
           <label>Nombre completo<input name="guestName" type="text" placeholder="Ej. Luis Suarez" required /></label>
-          <label>Telefono de contacto<input type="tel" placeholder="940560934" required /></label>
+          <label>Telefono de contacto<input name="phone" type="tel" placeholder="940560934" required /></label>
           <div className="two-columns">
-            <label>Fecha de visita<input type="date" required /></label>
-            <label>Hora de llegada<input type="time" required /></label>
+            <label>Fecha de visita<input name="visitDate" type="date" required /></label>
+            <label>Hora de llegada<input name="visitTime" type="time" required /></label>
           </div>
-          <label>Numero de personas<input type="number" min="1" max="14" placeholder="Ej. 3" required /></label>
+          <label>Numero de personas<input name="guests" type="number" min="1" max="14" placeholder="Ej. 3" required /></label>
           <button className="primary-action" type="submit">Confirmar reservacion</button>
           <p className="form-message" role="status">{message}</p>
         </form>
@@ -300,26 +318,36 @@ function Reservation() {
   );
 }
 
-function AdminCardList({ data, actionLabel }) {
+function AdminCardList({ data, actionLabel, onDelete }) {
+  if (!data.length) {
+    return <p className="empty-state">No hay registros por ahora.</p>;
+  }
+
   return (
     <div className="admin-grid">
-      {data.map(([name, detail, time, status]) => (
-        <article className="mini-admin-card" key={`${name}-${time}`}>
+      {data.map(([name, detail, time, status], index) => (
+        <article className="mini-admin-card" key={`${name}-${time}-${index}`}>
           <h3>{name}</h3>
           <p>{detail}</p>
           <p>{time}</p>
           <p><strong>{status}</strong></p>
           <button type="button">Ver</button>
           <button type="button">{actionLabel}</button>
+          {onDelete && <button className="danger-action" type="button" onClick={() => onDelete(index)}>Eliminar</button>}
         </article>
       ))}
     </div>
   );
 }
 
-function Admin() {
+function Admin({ bookings, onDeleteBooking }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [tab, setTab] = useState('inventario');
+  const bookingSummary = {
+    pending: bookings.filter(([, , , status]) => status === 'Pendiente').length,
+    confirmed: bookings.filter(([, , , status]) => status === 'Confirmada').length,
+    canceled: bookings.filter(([, , , status]) => status === 'Cancelada').length
+  };
 
   if (!loggedIn) {
     return (
@@ -377,11 +405,11 @@ function Admin() {
             <section className="admin-panel active">
               <div className="admin-title"><p className="eyebrow">Panel</p><h2>Reservaciones</h2></div>
               <div className="metric-grid">
-                <article><span>08</span><small>Pendientes</small></article>
-                <article><span>15</span><small>Confirmadas</small></article>
-                <article><span>02</span><small>Canceladas</small></article>
+                <article><span>{String(bookingSummary.pending).padStart(2, '0')}</span><small>Pendientes</small></article>
+                <article><span>{String(bookingSummary.confirmed).padStart(2, '0')}</span><small>Confirmadas</small></article>
+                <article><span>{String(bookingSummary.canceled).padStart(2, '0')}</span><small>Canceladas</small></article>
               </div>
-              <AdminCardList data={bookings} actionLabel="Atender" />
+              <AdminCardList data={bookings} actionLabel="Atender" onDelete={onDeleteBooking} />
             </section>
           )}
 
@@ -404,6 +432,26 @@ function Admin() {
 
 function App() {
   const [activeView, setActiveView] = useState('inicio');
+  const [bookingsState, setBookingsState] = useState(() => {
+    try {
+      const savedBookings = window.localStorage.getItem('fastFoodBookings');
+      return savedBookings ? JSON.parse(savedBookings) : initialBookings;
+    } catch (error) {
+      return initialBookings;
+    }
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem('fastFoodBookings', JSON.stringify(bookingsState));
+  }, [bookingsState]);
+
+  function addBooking(booking) {
+    setBookingsState((currentBookings) => [booking, ...currentBookings]);
+  }
+
+  function deleteBooking(indexToDelete) {
+    setBookingsState((currentBookings) => currentBookings.filter((_, index) => index !== indexToDelete));
+  }
 
   function changeView(view) {
     setActiveView(view);
@@ -412,13 +460,14 @@ function App() {
 
   return (
     <div className="restaurant-app">
+      <img className="watermark-logo" src={img('LOGO.png')} alt="" aria-hidden="true" />
       <Header activeView={activeView} onViewChange={changeView} />
       <main>
         {activeView === 'inicio' && <Home onViewChange={changeView} />}
         {activeView === 'carta' && <Menu />}
         {activeView === 'locales' && <Locations onViewChange={changeView} />}
-        {activeView === 'reserva' && <Reservation />}
-        {activeView === 'admin' && <Admin />}
+        {activeView === 'reserva' && <Reservation onAddBooking={addBooking} />}
+        {activeView === 'admin' && <Admin bookings={bookingsState} onDeleteBooking={deleteBooking} />}
       </main>
       <footer className="site-footer">
         <div><strong>FAST-FOOD PERU</strong><span>Delivery, reservas y combos.</span></div>
@@ -429,6 +478,11 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
 
 
 
