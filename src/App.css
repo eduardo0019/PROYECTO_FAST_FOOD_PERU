@@ -68,27 +68,19 @@ button {
   letter-spacing: 0;
 }
 
-.brand-mark {
-  width: 42px;
-  height: 42px;
-  border: 3px solid var(--red);
+.brand-logo {
+  width: 48px;
+  height: 48px;
+  display: block;
+  object-fit: contain;
   border-radius: 50%;
-  display: inline-grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at 65% 38%, #ffffff 0 12%, transparent 13%),
-    linear-gradient(135deg, #ffcc62, #d42318 58%, #2b140d);
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 900;
-  box-shadow: inset 0 0 0 2px #ffffff;
+  background: #ffffff;
 }
 
-.brand-mark.big {
-  width: 72px;
-  height: 72px;
+.brand-logo.big {
+  width: 92px;
+  height: 92px;
   margin: 0 auto 12px;
-  font-size: 20px;
 }
 
 .main-nav {
@@ -227,8 +219,15 @@ h2 {
   place-items: center;
   overflow: hidden;
   border: 2px solid #98d5df;
-  background:
-    linear-gradient(180deg, #dcfbff 0 63%, #f8dbc1 64% 100%);
+  background: #dcfbff;
+}
+
+.delivery-image {
+  width: 100%;
+  height: 100%;
+  min-height: 310px;
+  display: block;
+  object-fit: cover;
 }
 
 .phone-mock {
@@ -462,24 +461,19 @@ h2 {
 
 .food-art {
   min-height: 154px;
-  display: grid;
-  place-items: center;
-  font-size: 62px;
-  background:
-    radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.8), transparent 22%),
-    linear-gradient(135deg, #ffcf73, #f2791a);
+  width: 100%;
+  height: 180px;
+  display: block;
+  object-fit: cover;
+  background: #f7d59b;
 }
 
 .menu-card:nth-child(2n) .food-art {
-  background:
-    radial-gradient(circle at 70% 28%, rgba(255, 255, 255, 0.72), transparent 18%),
-    linear-gradient(135deg, #b7e4c7, #ffb703);
+  background: #e7f1d0;
 }
 
 .menu-card:nth-child(3n) .food-art {
-  background:
-    radial-gradient(circle at 38% 34%, rgba(255, 255, 255, 0.68), transparent 20%),
-    linear-gradient(135deg, #ffafcc, #fb5607);
+  background: #ffd6c2;
 }
 
 .menu-info {
@@ -854,3 +848,6 @@ th {
     flex-direction: column;
   }
 }
+
+
+

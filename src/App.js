@@ -1,50 +1,52 @@
 ﻿import React, { useState } from 'react';
 import './App.css';
 
+const img = (file) => `${process.env.PUBLIC_URL}/img/${file}`;
+
 const menuData = [
   {
     title: 'Burgers',
     icon: '&#127828;',
     items: [
-      ['Cheese Burger', 'Carne artesanal, queso cheddar, lechuga, tomate y salsa de la casa.', 'S/ 19.90', '&#127828;'],
-      ['Bacon Burger', 'Hamburguesa con tocino crocante, doble queso y papas al hilo.', 'S/ 19.90', '&#129386;'],
-      ['Big Grill Burger', 'Doble carne parrillera, cebolla caramelizada y crema especial.', 'S/ 18.90', '&#127828;']
+      ['Cheese Burger', 'Carne artesanal, queso cheddar, lechuga, tomate y salsa de la casa.', 'S/ 19.90', img('Cheese Burger.jpeg')],
+      ['Bacon Burger', 'Hamburguesa con tocino crocante, doble queso y papas al hilo.', 'S/ 19.90', img('hambuguersa_baccon.jpeg')],
+      ['Big Grill Burger', 'Doble carne parrillera, cebolla caramelizada y crema especial.', 'S/ 18.90', img('hambuguersa_grill.jpeg')]
     ]
   },
   {
     title: 'Salchipapas',
     icon: '&#127839;',
     items: [
-      ['Clasico', 'Papas doradas, hot dog, mayonesa, ketchup y mostaza.', 'S/ 15.90', '&#127839;'],
-      ['Salchipobre', 'Papas, hot dog, huevo frito, platano y salsa criolla.', 'S/ 17.90', '&#127831;'],
-      ['Salchibrasa', 'Papas crocantes, pollo brasa deshilachado y cremas.', 'S/ 19.90', '&#127839;']
+      ['Clasico', 'Papas doradas, hot dog, mayonesa, ketchup y mostaza.', 'S/ 15.90', img('salchipapa_clasico.jpeg')],
+      ['Salchipobre', 'Papas, hot dog, huevo frito, platano y salsa criolla.', 'S/ 17.90', img('salchipapa_alopobre.jpeg')],
+      ['Salchibrasa', 'Papas crocantes, pollo brasa deshilachado y cremas.', 'S/ 19.90', img('salchipapa_broaster.jpeg')]
     ]
   },
   {
     title: 'Ensaladas',
     icon: '&#129367;',
     items: [
-      ['Ensalada Cesar', 'Pollo grillado, crutones, queso parmesano y salsa cesar.', 'S/ 19.90', '&#129367;'],
-      ['Ensalada Caprese', 'Tomate, queso fresco, albahaca y aceite de oliva.', 'S/ 19.90', '&#127813;'],
-      ['Ensalada Griega', 'Pepino, aceitunas, tomate, queso y vegetales frescos.', 'S/ 19.90', '&#129382;']
+      ['Ensalada Cesar', 'Pollo grillado, crutones, queso parmesano y salsa cesar.', 'S/ 19.90', img('ensalada_cesar.jpeg')],
+      ['Ensalada Caprese', 'Tomate, queso fresco, albahaca y aceite de oliva.', 'S/ 19.90', img('ensalada_capresse.jpeg')],
+      ['Ensalada Griega', 'Pepino, aceitunas, tomate, queso y vegetales frescos.', 'S/ 19.90', img('ensalada_griega.jpeg')]
     ]
   },
   {
     title: 'Chaufas',
     icon: '&#127834;',
     items: [
-      ['Chaufa Clasico', 'Arroz salteado al wok con pollo, huevo y cebolla china.', 'S/ 14.90', '&#127834;'],
-      ['Chaufa de Carne', 'Carne salteada, sillao, kion y verduras crocantes.', 'S/ 16.90', '&#127858;'],
-      ['Chaufa Amazonico', 'Arroz, cecina, platano frito y toque oriental.', 'S/ 18.90', '&#127834;']
+      ['Chaufa Clasico', 'Arroz salteado al wok con pollo, huevo y cebolla china.', 'S/ 14.90', img('chaufa_clasico.jpeg')],
+      ['Chaufa de Carne', 'Carne salteada, sillao, kion y verduras crocantes.', 'S/ 16.90', img('chaufa_carne.jpeg')],
+      ['Chaufa Amazonico', 'Arroz, cecina, platano frito y toque oriental.', 'S/ 18.90', img('chaufa_amazonico.jpeg')]
     ]
   },
   {
     title: 'Bebidas',
     icon: '&#129380;',
     items: [
-      ['Gaseosa 600 ml', 'Inca Kola, Coca-Cola o Sprite helada.', 'S/ 5.00', '&#129380;'],
-      ['Agua 750 ml', 'Agua mineral sin gas o con gas.', 'S/ 3.00', '&#128167;'],
-      ['Bebida de la casa 1 L', 'Maracuya, chicha morada o limonada frozen.', 'S/ 8.90', '&#127865;']
+      ['Gaseosa 600 ml', 'Inca Kola, Coca-Cola o Sprite helada.', 'S/ 5.00', img('gaseosa.jpeg')],
+      ['Agua 750 ml', 'Agua mineral sin gas o con gas.', 'S/ 3.00', img('agua.jpeg')],
+      ['Bebida de la casa 1 L', 'Maracuya, chicha morada o limonada frozen.', 'S/ 8.90', img('bebidas_casa.jpeg')]
     ]
   }
 ];
@@ -96,7 +98,7 @@ function Header({ activeView, onViewChange }) {
   return (
     <header className="site-header">
       <button className="brand" type="button" onClick={() => onViewChange('inicio')}>
-        <span className="brand-mark">FP</span>
+        <img className="brand-logo" src={img('LOGO.png')} alt="FAST-FOOD PERU" />
         <span>FAST-FOOD PERU</span>
       </button>
 
@@ -132,16 +134,7 @@ function Home({ onViewChange }) {
           </div>
 
           <div className="delivery-scene" aria-label="Pedido por delivery">
-            <div className="phone-mock">
-              <span className="phone-camera" />
-              <div className="phone-food"><Entity code="&#127828;" /></div>
-              <strong>S/ 29.90</strong>
-              <small>Combo crispy</small>
-            </div>
-            <span className="food-bubble bubble-one"><Entity code="&#127839;" /></span>
-            <span className="food-bubble bubble-two"><Entity code="&#127829;" /></span>
-            <span className="food-bubble bubble-three"><Entity code="&#129386;" /></span>
-            <span className="delivery-rider"><Entity code="&#128757;" /></span>
+            <img className="delivery-image" src={img('delivery.jpeg')} alt="Pedido por delivery" />
           </div>
         </section>
 
@@ -220,9 +213,9 @@ function Menu() {
             <section className="menu-category" key={category.title}>
               <h2>{category.title}: <Entity code={category.icon} /></h2>
               <div className="menu-grid">
-                {category.items.map(([name, description, price, icon]) => (
+                {category.items.map(([name, description, price, image]) => (
                   <article className="menu-card" key={name}>
-                    <div className="food-art"><Entity code={icon} /></div>
+                    <img className="food-art" src={image} alt={name} />
                     <div className="menu-info">
                       <h3>{name}</h3>
                       <p>{description}</p>
@@ -334,7 +327,7 @@ function Admin() {
         <div className="page-shell admin-shell">
           <section className="login-panel">
             <div className="admin-card login-card">
-              <span className="brand-mark big">FP</span>
+              <img className="brand-logo big" src={img('LOGO.png')} alt="FAST-FOOD PERU" />
               <h1>Acceso del propietario</h1>
               <p>Bienvenido al panel de control.</p>
               <form onSubmit={(event) => { event.preventDefault(); setLoggedIn(true); }}>
@@ -436,3 +429,8 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
