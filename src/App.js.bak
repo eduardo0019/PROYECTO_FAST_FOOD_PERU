@@ -6,7 +6,7 @@ const menuData = [
     title: 'Burgers',
     icon: '&#127828;',
     items: [
-      ['Cheese Burger', 'Carne artesanal, queso cheddar, lechuga, tomate y salsa de la casa.', 'S/ 19.90', '&#127828;'],
+      ['cheese_burger', 'Carne artesanal, queso cheddar, lechuga, tomate y salsa de la casa.', 'S/ 19.90', '&#127828;'],
       ['Bacon Burger', 'Hamburguesa con tocino crocante, doble queso y papas al hilo.', 'S/ 19.90', '&#129386;'],
       ['Big Grill Burger', 'Doble carne parrillera, cebolla caramelizada y crema especial.', 'S/ 18.90', '&#127828;']
     ]
