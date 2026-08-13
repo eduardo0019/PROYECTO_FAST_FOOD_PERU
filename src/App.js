@@ -394,8 +394,8 @@ function Reservation({ onAddBooking, initialSede = '' }) {
               <option value="">{selectedSede ? (availableTables.length ? 'Selecciona una mesa' : 'No hay mesas disponibles en esta sede') : 'Selecciona primero una sede'}</option>
               {availableTables.map((table) => (
                 <option key={table.idmesa} value={table.idmesa}>
-                  {table.nombremesa || table.name || table.descripcionmesa || `Mesa ${table.idmesa}`} ({table.cantidadsillas || 4} sillas)
-              </option>
+                  {table.nombremesa || `Mesa ${table.idmesa}`}
+                </option>
               ))}
             </select>
           </label>
