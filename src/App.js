@@ -1,8 +1,11 @@
 ﻿import React, { useEffect, useState } from 'react';
 import './App.css';
-
 const img = (file) => `${process.env.PUBLIC_URL}/img/${file}`;
-const apiUrl = (path) => `https://sincere-exploration-production.up.railway.app/api${path}`;
+const apiUrl = (path) => {
+  const cleanPath = path.startsWith('/api') ? path.replace('/api', '') : path;
+  const formattedPath = cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`;
+  return `https://sincere-exploration-production.up.railway.app/api${formattedPath}`;
+};
 const categoryIcons = { Burgers: '&#127828;', Salchipapas: '&#127839;', Ensaladas: '&#129367;', Chaufas: '&#127834;', Bebidas: '&#129380;' };
 const reservationTimes = Array.from({ length: 14 }, (_, hour) => `${String(hour + 10).padStart(2, '0')}:00`);
 const deliveryStatuses = ['Solicitado', 'En camino', 'Entregado'];
