@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/PROYECTO_FAST_FOOD_PERU/static/css/main.d8eb8cf8.css",
-    "main.js": "/PROYECTO_FAST_FOOD_PERU/static/js/main.0d89dfd6.js",
+    "main.js": "/PROYECTO_FAST_FOOD_PERU/static/js/main.d3fc9498.js",
     "static/js/453.c70de3ec.chunk.js": "/PROYECTO_FAST_FOOD_PERU/static/js/453.c70de3ec.chunk.js",
     "index.html": "/PROYECTO_FAST_FOOD_PERU/index.html",
     "main.d8eb8cf8.css.map": "/PROYECTO_FAST_FOOD_PERU/static/css/main.d8eb8cf8.css.map",
-    "main.0d89dfd6.js.map": "/PROYECTO_FAST_FOOD_PERU/static/js/main.0d89dfd6.js.map",
+    "main.d3fc9498.js.map": "/PROYECTO_FAST_FOOD_PERU/static/js/main.d3fc9498.js.map",
     "453.c70de3ec.chunk.js.map": "/PROYECTO_FAST_FOOD_PERU/static/js/453.c70de3ec.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d8eb8cf8.css",
-    "static/js/main.0d89dfd6.js"
+    "static/js/main.d3fc9498.js"
   ]
 }
