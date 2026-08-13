@@ -320,9 +320,7 @@ function Reservation({ onAddBooking, initialSede = '' }) {
   const [tables, setTables] = useState([]);
   const [selectedTableId, setSelectedTableId] = useState('');
   const [selectedSede, setSelectedSede] = useState(initialSede);
-  const availableTables = tables;
-    ? tables.filter((table) => !tableBranch(table) || tableBranch(table).toLocaleLowerCase() === selectedSede.toLocaleLowerCase())
-    : [];
+ const availableTables = selectedSede ? tables : [];
   const selectedTable = availableTables.find((table) => String(table.idmesa) === selectedTableId);
 
   useEffect(() => {
