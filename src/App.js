@@ -370,7 +370,7 @@ function Reservation({ onAddBooking, initialSede = '' }) {
         </section>
 
         <form className="reservation-form" onSubmit={handleSubmit}>
-          <h2>Detalles de la reserva - Actualizado</h2>
+          <h2>Detalles de la reserva.</h2>
           <label>Nombre completo<input name="guestName" type="text" placeholder="Ej. Luis Suarez" required /></label>
           <label>Telefono de contacto<input name="phone" type="tel" placeholder="940560934" required /></label>
           <label>Sede
