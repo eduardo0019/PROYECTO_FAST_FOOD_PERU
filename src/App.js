@@ -326,7 +326,7 @@ function Reservation({ onAddBooking, initialSede = '' }) {
   const selectedTable = availableTables.find((table) => String(table.idmesa) === selectedTableId);
 
   useEffect(() => {
-    fetch(apiUrl('/api/mesas'))
+    fetch(apiUrl('/mesas'))
       .then((response) => {
         if (!response.ok) throw new Error('No se pudieron cargar las mesas.');
         return response.json();
