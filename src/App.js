@@ -391,6 +391,7 @@ function Reservation({ onAddBooking, initialSede = '' }) {
             </label>
           </div>
           <label>Mesa
+            {/* Forzar actualización de versión de mesas */}
             <select name="mesaId" required disabled={!availableTables.length} value={selectedTableId} onChange={(event) => setSelectedTableId(event.target.value)}>
               <option value="">{selectedSede ? (availableTables.length ? 'Selecciona una mesa' : 'No hay mesas disponibles en esta sede') : 'Selecciona primero una sede'}</option>
               {availableTables.map((table) => (
